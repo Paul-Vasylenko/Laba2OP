@@ -12,7 +12,7 @@ fstream - both
 char directory[200];
 void workWithFile(char*, char*);
 int countElem(char*);
-int findStar(char*, int);
+int findSlash(char*, int);
 
 int main()
 {
@@ -30,9 +30,9 @@ int main()
 }
 
 void workWithFile(char* fName, char* dir) {
-    int countDir = countElem(dir);
-    int starDir = findStar(dir, countDir);
-    cout << starDir << endl;
+    int countDir = countElem(dir);//elements in char* dir
+    int slashDir = findSlash(dir, countDir);// position of last \ in dir
+    cout << slashDir << endl;
     //// fName = students1.csv;
     //int count = 0;
     ////calculating the size of dir
@@ -87,8 +87,10 @@ int countElem(char* arr) {
     return count;
 }
 
-int findStar(char* arr, int size) {
+int findSlash(char* arr, int size) {
+    int position = 0;
     for (int i = 0; i < size; i++) {
-        if (arr[i] == '*') return i;
+        if (arr[i] == '\\') position = i;
     }
+    return position;
 }
