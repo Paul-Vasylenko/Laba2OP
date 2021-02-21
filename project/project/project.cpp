@@ -9,7 +9,6 @@ ofstream - write into file
 ifstream - read from file
 fstream - both
 */
-
 char directory[200];
 char* getFileRoute(char*, char*);
 int countElem(char*);
@@ -31,7 +30,6 @@ int main()
     _findclose(handle);
     return 0;
 }
-
 char* getFileRoute(char* fName, char* dir) {
     int countDir = countElem(dir);//elements in char* dir
     int countFileName = countElem(fName);//elements in char* fName
@@ -67,15 +65,19 @@ void countAveragePoints(char* path) {
     ofstream fOut;
     fOut.open("files\\result.csv");
     string student;
+    string surname;
+    string isBudget;
     while (!fIn.eof()) {
         getline(fIn, student);
-        if (isdigit(4)) {
-            cout << student << endl;
-        }
-        else {
-            cout << student <<endl;
-        }
-    }
-    
-    
+        int toSurname=student.find(',');
+        surname = student.substr(0, toSurname);// student's surname
+        /*if (!isdigit(surname[0])) {
+            fOut << "a new line: " << surname << endl;
+        }*/
+        int toBudget = student.rfind(',');
+        isBudget = student.substr(toBudget+1, student.length());//is he budget? true:false
+        /*if (isBudget=="TRUE") {
+            fOut << "a new line: " << surname <<" and "<<isBudget<< endl;
+        }*/
+    }    
 }
