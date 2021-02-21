@@ -20,7 +20,9 @@ int main()
 	
     (cin >> directory).get();//getting the directory and putting it into the char*
     setlocale(LC_ALL, " ");//ua language in files
-
+    ofstream fOut;
+    fOut.open("files\\result.csv", ios::trunc);//либо создаем файл, либо очищаем если он есть.
+    fOut.close();
     //loop that does smth for every file .csv
     _finddata_t data;
     intptr_t handle = _findfirst(directory, &data);
@@ -31,6 +33,7 @@ int main()
     _findclose(handle);
     return 0;
 }
+
 char* getFileRoute(char* fName, char* dir) {
     int countDir = countElem(dir);//elements in char* dir
     int countFileName = countElem(fName);//elements in char* fName
@@ -61,15 +64,12 @@ int findSlash(char* arr, int size) {
 }
 
 void countAveragePointsAndWrite(char* path) {
-    ofstream fOut;
-    fOut.open("files\\result.csv", ios::trunc);//либо создаем файл, либо очищаем если он есть.
-    fOut.close();
+    //на входе имеем пустой файл result.csv
     ifstream fIn;
     fIn.open(path);
     if (!fIn.is_open()) cout << "Error";
     else {
-        
-        ofstream fOut;
+        fstream fOut;
         fOut.open("files\\result.csv", ios::app);
         string student;
         string surname;
@@ -94,7 +94,9 @@ void countAveragePointsAndWrite(char* path) {
             }
             result = float(result) / 5.0;
             if (isBudget == "TRUE" && result >= 60.0) {
-                fOut << surname << " , " << result << " , " << isBudget << endl;
+                
+                fOut << surname << ";" << result << ";" << isBudget << endl;
+                cout << surname << ";" << result << ";" << isBudget << endl;
             }
         }
         fOut.close();
