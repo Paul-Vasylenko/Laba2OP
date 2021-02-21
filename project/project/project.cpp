@@ -13,10 +13,11 @@ char directory[200];
 char* getFileRoute(char*, char*);
 int countElem(char*);
 int findSlash(char*, int);
-void countAveragePoints(char*);
+void countAveragePointsAndWrite(char*);
 
 int main()
 {
+	
     (cin >> directory).get();//getting the directory and putting it into the char*
     setlocale(LC_ALL, " ");//ua language in files
 
@@ -25,7 +26,7 @@ int main()
     intptr_t handle = _findfirst(directory, &data);
     do {
         char* routeToFile = getFileRoute(data.name, directory);//e.g. of result -> "files\\students1.csv"
-        countAveragePoints(routeToFile);
+        countAveragePointsAndWrite(routeToFile);
     } while (_findnext(handle, &data) == 0);
     _findclose(handle);
     return 0;
@@ -59,41 +60,44 @@ int findSlash(char* arr, int size) {
     return position;
 }
 
-void countAveragePoints(char* path) {
+void countAveragePointsAndWrite(char* path) {
+    ofstream fOut;
+    fOut.open("files\\result.csv", ios::trunc);//либо создаем файл, либо очищаем если он есть.
+    fOut.close();
     ifstream fIn;
     fIn.open(path);
-    ofstream fOut;
-    fOut.open("files\\result.csv");
-    string student;
-    string surname;
-    string isBudget;
-    string marks;
-    while (!fIn.eof()) {
-        getline(fIn, student);
-        int toSurname=student.find(',');
-        surname = student.substr(0, toSurname);// student's surname
-        /*if (!isdigit(surname[0])) {
-            fOut << "a new line: " << surname << endl;
-        }*/
-        int toBudget = student.rfind(',');
-        isBudget = student.substr(toBudget+1, student.length());//is he budget? true:false
-        /*if (isBudget=="TRUE") {
-            fOut << "a new line: " << surname <<" and "<<isBudget<< endl;
-        }*/
-        marks = student.substr(toSurname + 1, toBudget);
+    if (!fIn.is_open()) cout << "Error";
+    else {
         
-        int start = 0, end = 0;
-        int mark; float result = 0;
-        for (int i = 0; i < 5; i++) {
-            end = marks.find(',', start);
-            if (end > 0) {
-                mark = stoi(marks.substr(start, end));
-                result += mark;
-                start = end + 1;
+        ofstream fOut;
+        fOut.open("files\\result.csv", ios::app);
+        string student;
+        string surname;
+        string isBudget;
+        string marks;
+        while (!fIn.eof()) {
+            getline(fIn, student);
+            int toSurname = student.find(',');
+            surname = student.substr(0, toSurname);// student's surname
+            int toBudget = student.rfind(',');
+            isBudget = student.substr(toBudget + 1, student.length());//is he budget? true:false
+            marks = student.substr(toSurname + 1, toBudget);
+            int start = 0, end = 0;
+            int mark; float result = 0;
+            for (int i = 0; i < 5; i++) {
+                end = marks.find(',', start);
+                if (end > 0) {
+                    mark = stoi(marks.substr(start, end));
+                    result += mark;
+                    start = end + 1;
+                }
+            }
+            result = float(result) / 5.0;
+            if (isBudget == "TRUE" && result >= 60.0) {
+                fOut << surname << " , " << result << " , " << isBudget << endl;
             }
         }
-        result = float(result)/5.0;
-        fOut << surname << " , " << result << " , " << isBudget<<endl;
-
-    }    
+        fOut.close();
+    }
+    fIn.close();
 }
