@@ -10,7 +10,7 @@ fstream - both
 */
 
 char directory[200];
-void workWithFile(char*, char*);
+char* getFileRoute(char*, char*);
 int countElem(char*);
 int findSlash(char*, int);
 
@@ -23,57 +23,21 @@ int main()
     _finddata_t data;
     intptr_t handle = _findfirst(directory, &data);
     do {
-        workWithFile(data.name, directory);
+        char* routeToFile = getFileRoute(data.name, directory);//e.g. of result -> "files\\students1.csv"
+        
     } while (_findnext(handle, &data) == 0);
     _findclose(handle);
     return 0;
 }
 
-void workWithFile(char* fName, char* dir) {
+char* getFileRoute(char* fName, char* dir) {
     int countDir = countElem(dir);//elements in char* dir
+    int countFileName = countElem(fName);//elements in char* dir
     int slashDir = findSlash(dir, countDir);// position of last \ in dir
-    cout << slashDir << endl;
-    //// fName = students1.csv;
-    //int count = 0;
-    ////calculating the size of dir
-    //for (int i = 0; i < 20; i++)
-    //{
-    //    if (dir[i] != dir[21])
-    //    {
-    //        count++;
-    //    }
-    //}
-    //cout << count;
-    ////count = 11
-    //int countfile = 0;
-    ////calculating the size of fName
-    //for (int i = 0; i < 20; i++)
-    //{
-    //    if (fName[i] != fName[21])
-    //    {
-    //        countfile++;
-    //    }
-    //}
-    ////countfile = 12
-    //string numberofStudents;
-    //ifstream fIn;
-    //int k = 0;
-    ////find the position of * (files\\*.csv --> files\\)
-    //for (int i = 0; i < count; i++) {
-    //    if (dir[i] == '*') {
-    //        for (int j = i; j < count; j++) {
-    //            dir[j] = fName[k];
-    //            k++;
-    //        } 
-    //    }
-    //    
-    //}
-    //k++;
-    //for (k; k < countfile; k++) {
-    //    dir[count] = fName[k];
-    //    count++;
-    //}
-    //    cout << dir << endl;
+    for (int i = 0; i < countFileName; i++) {
+        dir[i + slashDir + 1] = fName[i];
+    }
+    return dir;
 }
 
 int countElem(char* arr) {
