@@ -67,6 +67,7 @@ void countAveragePoints(char* path) {
     string student;
     string surname;
     string isBudget;
+    string marks;
     while (!fIn.eof()) {
         getline(fIn, student);
         int toSurname=student.find(',');
@@ -79,5 +80,20 @@ void countAveragePoints(char* path) {
         /*if (isBudget=="TRUE") {
             fOut << "a new line: " << surname <<" and "<<isBudget<< endl;
         }*/
+        marks = student.substr(toSurname + 1, toBudget);
+        
+        int start = 0, end = 0;
+        int mark; float result = 0;
+        for (int i = 0; i < 5; i++) {
+            end = marks.find(',', start);
+            if (end > 0) {
+                mark = stoi(marks.substr(start, end));
+                result += mark;
+                start = end + 1;
+            }
+        }
+        result = float(result)/5.0;
+        fOut << surname << " , " << result << " , " << isBudget<<endl;
+
     }    
 }
