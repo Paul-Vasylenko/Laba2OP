@@ -13,7 +13,7 @@ char directory[200];
 char* getFileRoute(char*, char*);
 int countElem(char*);
 int findSlash(char*, int);
-void countAveragePointsAndWrite(char*);
+void countAveragePointsAndWrite(char*m, int*);
 
 int main()
 {
@@ -26,11 +26,14 @@ int main()
     //loop that does smth for every file .csv
     _finddata_t data;
     intptr_t handle = _findfirst(directory, &data);
+    int numOfStudents=0;
     do {
         char* routeToFile = getFileRoute(data.name, directory);//e.g. of result -> "files\\students1.csv"
-        countAveragePointsAndWrite(routeToFile);
+        countAveragePointsAndWrite(routeToFile, &numOfStudents);
     } while (_findnext(handle, &data) == 0);
     _findclose(handle);
+    numOfStudents = numOfStudents * 0.4;
+    cout << numOfStudents;
     return 0;
 }
 
@@ -63,7 +66,8 @@ int findSlash(char* arr, int size) {
     return position;
 }
 
-void countAveragePointsAndWrite(char* path) {
+void countAveragePointsAndWrite(char* path, int *numOfStudents) {
+   
     //на входе имеем пустой файл result.csv
     ifstream fIn;
     fIn.open(path);
@@ -75,7 +79,9 @@ void countAveragePointsAndWrite(char* path) {
         string surname;
         string isContract;
         string marks;
-        while (!fIn.eof()) {
+        
+        while (!fIn.eof()) 
+        {
             getline(fIn, student);
             int toSurname = student.find(',');
             surname = student.substr(0, toSurname);// student's surname
@@ -94,12 +100,14 @@ void countAveragePointsAndWrite(char* path) {
             }
             result = float(result) / 5.0;
             if (isContract == "FALSE" && result >= 60.0) {
-                
+                (*numOfStudents)++;
                 fOut << surname << ";" << result << ";" << isContract << endl;
-                cout << surname << ";" << result << ";" << isContract << endl;
+                
             }
         }
         fOut.close();
+        
     }
     fIn.close();
+    
 }
