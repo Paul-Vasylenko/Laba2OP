@@ -1,0 +1,4 @@
+programm has to count how many students in result.csv(38)
+38*0.4 -->15.2 (15)
+15 times for loop finding max and putting it into "Rating.csv"  width(3)
+cout << 15-th cycle result

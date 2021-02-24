@@ -1,20 +1,105 @@
-﻿// project.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
-#include <iostream>
+﻿#include <iostream>
+#include <fstream>
+#include <string>
+#include <io.h>
+#include <locale>
+using namespace std;
+/*
+ofstream - write into file
+ifstream - read from file
+fstream - both
+*/
+char directory[200];
+char* getFileRoute(char*, char*);
+int countElem(char*);
+int findSlash(char*, int);
+void countAveragePointsAndWrite(char*);
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	
+    (cin >> directory).get();//getting the directory and putting it into the char*
+    setlocale(LC_ALL, " ");//ua language in files
+    ofstream fOut;
+    fOut.open("files\\result.csv", ios::trunc);//либо создаем файл, либо очищаем если он есть.
+    fOut.close();
+    //loop that does smth for every file .csv
+    _finddata_t data;
+    intptr_t handle = _findfirst(directory, &data);
+    do {
+        char* routeToFile = getFileRoute(data.name, directory);//e.g. of result -> "files\\students1.csv"
+        countAveragePointsAndWrite(routeToFile);
+    } while (_findnext(handle, &data) == 0);
+    _findclose(handle);
+    return 0;
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+char* getFileRoute(char* fName, char* dir) {
+    int countDir = countElem(dir);//elements in char* dir
+    int countFileName = countElem(fName);//elements in char* fName
+    int slashDir = findSlash(dir, countDir);// position of last \ in dir
+    for (int i = 0; i < countFileName; i++) {
+        dir[i + slashDir + 1] = fName[i];
+    }
+    return dir;
+}
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+int countElem(char* arr) {
+    int count = 0;
+    for (int i = 0; i < 200; i++)
+    {
+        if (arr[i] != arr[200]) {
+            count++;
+        }
+    }
+    return count;
+}
+
+int findSlash(char* arr, int size) {
+    int position = 0;
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == '\\') position = i;
+    }
+    return position;
+}
+
+void countAveragePointsAndWrite(char* path) {
+    //на входе имеем пустой файл result.csv
+    ifstream fIn;
+    fIn.open(path);
+    if (!fIn.is_open()) cout << "Error";
+    else {
+        fstream fOut;
+        fOut.open("files\\result.csv", ios::app);
+        string student;
+        string surname;
+        string isBudget;
+        string marks;
+        while (!fIn.eof()) {
+            getline(fIn, student);
+            int toSurname = student.find(',');
+            surname = student.substr(0, toSurname);// student's surname
+            int toBudget = student.rfind(',');
+            isBudget = student.substr(toBudget + 1, student.length());//is he budget? true:false
+            marks = student.substr(toSurname + 1, toBudget);
+            int start = 0, end = 0;
+            int mark; float result = 0;
+            for (int i = 0; i < 5; i++) {
+                end = marks.find(',', start);
+                if (end > 0) {
+                    mark = stoi(marks.substr(start, end));
+                    result += mark;
+                    start = end + 1;
+                }
+            }
+            result = float(result) / 5.0;
+            if (isBudget == "TRUE" && result >= 60.0) {
+                
+                fOut << surname << ";" << result << ";" << isBudget << endl;
+                cout << surname << ";" << result << ";" << isBudget << endl;
+            }
+        }
+        fOut.close();
+    }
+    fIn.close();
+}
