@@ -13,11 +13,11 @@ char directory[200];
 char* getFileRoute(char*, char*);
 int countElem(char*);
 int findSlash(char*, int);
-void countAveragePointsAndWrite(char*m, int*);
+void countAveragePointsAndWrite(char* m, int*);
 
 int main()
 {
-	
+
     (cin >> directory).get();//getting the directory and putting it into the char*
     setlocale(LC_ALL, " ");//ua language in files
     ofstream fOut;
@@ -26,7 +26,7 @@ int main()
     //loop that does smth for every file .csv
     _finddata_t data;
     intptr_t handle = _findfirst(directory, &data);
-    int numOfStudents=0;
+    int numOfStudents = 0;
     do {
         char* routeToFile = getFileRoute(data.name, directory);//e.g. of result -> "files\\students1.csv"
         countAveragePointsAndWrite(routeToFile, &numOfStudents);
@@ -66,8 +66,8 @@ int findSlash(char* arr, int size) {
     return position;
 }
 
-void countAveragePointsAndWrite(char* path, int *numOfStudents) {
-   
+void countAveragePointsAndWrite(char* path, int* numOfStudents) {
+
     //на входе имеем пустой файл result.csv
     ifstream fIn;
     fIn.open(path);
@@ -79,8 +79,8 @@ void countAveragePointsAndWrite(char* path, int *numOfStudents) {
         string surname;
         string isContract;
         string marks;
-        
-        while (!fIn.eof()) 
+
+        while (!fIn.eof())
         {
             getline(fIn, student);
             int toSurname = student.find(',');
@@ -100,13 +100,17 @@ void countAveragePointsAndWrite(char* path, int *numOfStudents) {
             }
             result = float(result) / 5.0;
             if (isContract == "FALSE" && result >= 60.0) {
-                
+                fOut << surname << ";";
+                fOut.setf(ios::fixed);
+                fOut.precision(3);
+                fOut << result << ";" << isContract << endl;
+                (*numOfStudents)++;
 
             }
         }
         fOut.close();
-        
+
     }
     fIn.close();
-    
+
 }
