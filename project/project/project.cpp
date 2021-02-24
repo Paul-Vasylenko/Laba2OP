@@ -73,15 +73,15 @@ void countAveragePointsAndWrite(char* path) {
         fOut.open("files\\result.csv", ios::app);
         string student;
         string surname;
-        string isBudget;
+        string isContract;
         string marks;
         while (!fIn.eof()) {
             getline(fIn, student);
             int toSurname = student.find(',');
             surname = student.substr(0, toSurname);// student's surname
-            int toBudget = student.rfind(',');
-            isBudget = student.substr(toBudget + 1, student.length());//is he budget? true:false
-            marks = student.substr(toSurname + 1, toBudget);
+            int toContract = student.rfind(',');
+            isContract = student.substr(toContract + 1, student.length());//is he contract? true:false
+            marks = student.substr(toSurname + 1, toContract);
             int start = 0, end = 0;
             int mark; float result = 0;
             for (int i = 0; i < 5; i++) {
@@ -93,10 +93,10 @@ void countAveragePointsAndWrite(char* path) {
                 }
             }
             result = float(result) / 5.0;
-            if (isBudget == "TRUE" && result >= 60.0) {
+            if (isContract == "FALSE" && result >= 60.0) {
                 
-                fOut << surname << ";" << result << ";" << isBudget << endl;
-                cout << surname << ";" << result << ";" << isBudget << endl;
+                fOut << surname << ";" << result << ";" << isContract << endl;
+                cout << surname << ";" << result << ";" << isContract << endl;
             }
         }
         fOut.close();
