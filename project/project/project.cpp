@@ -100,8 +100,6 @@ void countAveragePointsAndWrite(char* path, int *numOfStudents) {
             }
             result = float(result) / 5.0;
             if (isContract == "FALSE" && result >= 60.0) {
-
-
                 fOut << surname << ";";
                 fOut.setf(ios::fixed);
                 fOut.precision(3);
