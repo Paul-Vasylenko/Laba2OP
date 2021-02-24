@@ -94,9 +94,11 @@ void countAveragePointsAndWrite(char* path) {
             }
             result = float(result) / 5.0;
             if (isContract == "FALSE" && result >= 60.0) {
-                
-                fOut << surname << ";" << result << ";" << isContract << endl;
-                cout << surname << ";" << result << ";" << isContract << endl;
+
+                fOut << surname << ";";
+                fOut.setf(ios::fixed);
+                fOut.precision(3);
+                fOut<< result << ";" << isContract << endl;
             }
         }
         fOut.close();
