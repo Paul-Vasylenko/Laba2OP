@@ -100,9 +100,8 @@ void countAveragePointsAndWrite(char* path, int *numOfStudents) {
             }
             result = float(result) / 5.0;
             if (isContract == "FALSE" && result >= 60.0) {
-                (*numOfStudents)++;
-                fOut << surname << ";" << result << ";" << isContract << endl;
                 
+
             }
         }
         fOut.close();
