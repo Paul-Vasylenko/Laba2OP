@@ -16,6 +16,7 @@ int findSlash(char*, int);
 void countAveragePointsAndWrite(char*m, int*);
 void createRating(int, char*);
 float findMaxMark(float*, string);
+int countStudents(float);
 
 int main()
 {
@@ -138,8 +139,18 @@ void createRating(int numOfStudents, char* dir)
         for (int i = 0; i < numOfStudents;i++) {
             getline(fIn, student);
             mark = findMaxMark(&max, student); // max mark, 91.400 e.g.
+            int number = countStudents(mark); // how many students with mark 91.400 ?
+            if (number == 1) {//if there is only 1 student - write it down
+                ofstream fOut;
+                fOut.open(fileRoute, ios::app);
+                if (!fOut.is_open())cout << "Error1";
+                else {
+                        fOut << student << endl;
+                        i += number;
+                }
+                fOut.close();
+            }
             cout << mark << endl;
-
         }
     }
     fIn.close();
@@ -173,3 +184,26 @@ float findMaxMark(float* lessthan, string student1) {
 
 }
 
+int countStudents(float mark) {
+    ifstream fIn;
+    fIn.open("files\\result.csv");
+    if (!fIn.is_open())cout << "Error11";
+    else {
+        string student;
+        int count = 0;
+        float stdMark;
+        while (!fIn.eof()) {
+            getline(fIn, student);
+            if (student != "") {
+                int start = student.find(';');
+                int end = student.rfind(';');
+                stdMark = stof(student.substr(start + 1, end - start - 1));
+                if (stdMark == mark) {
+                    count++;
+                }
+            }
+
+        }
+        return count;
+    }
+}
