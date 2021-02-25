@@ -129,12 +129,11 @@ void createRating(int numOfStudents, char* dir) {
     ifstream fIn;
     fIn.open("files\\result.csv");
     string student;
-    float minMark;
     if (!fIn.is_open())cout << "Error11";
     else {
 
         float max = 100.1;
-        float mark;
+        float mark=0;
         for (int i = 0; i < numOfStudents;) {
             getline(fIn, student);
             mark = findMaxMark(&max, &student); // max mark, 91.400 e.g.
@@ -238,7 +237,6 @@ void writeAll(int number, float mark, char* root) {
                     fOut4.open(root, ios::app);
                     if (!fOut4.is_open()) cout << "Error";
                     else {
-
                         fOut4 << student << endl;
                         fOut4.close();
                     }
