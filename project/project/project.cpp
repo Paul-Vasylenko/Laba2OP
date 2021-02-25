@@ -15,12 +15,12 @@ int countElem(char*);
 int findSlash(char*, int);
 void countAveragePointsAndWrite(char*m, int*);
 void createRating(int, char*);
-float findMaxMark(float*, string);
+float findMaxMark(float*, string*);
 int countStudents(float);
+void writeAll(int, float, char*);
 
 int main()
 {
-
     (cin >> directory).get();//getting the directory and putting it into the char*
     setlocale(LC_ALL, " ");//ua language in files
     ofstream fOut1;
@@ -120,8 +120,7 @@ void countAveragePointsAndWrite(char* path, int *numOfStudents) {
     fIn.close();
 }
 
-void createRating(int numOfStudents, char* dir)
-{
+void createRating(int numOfStudents, char* dir) {
     char ratingF[] = "rating.csv";
     char* fileRoute = getFileRoute(ratingF, dir); // result is files\\rating.csv
     ofstream fOut;
@@ -136,31 +135,43 @@ void createRating(int numOfStudents, char* dir)
 
         float max = 100.1;
         float mark;
-        for (int i = 0; i < numOfStudents;i++) {
+        for (int i = 0; i < numOfStudents;) {
             getline(fIn, student);
-            mark = findMaxMark(&max, student); // max mark, 91.400 e.g.
+            mark = findMaxMark(&max, &student); // max mark, 91.400 e.g.
+
             int number = countStudents(mark); // how many students with mark 91.400 ?
             if (number == 1) {//if there is only 1 student - write it down
                 ofstream fOut;
                 fOut.open(fileRoute, ios::app);
                 if (!fOut.is_open())cout << "Error1";
                 else {
-                        fOut << student << endl;
-                        i += number;
+                    fOut << student << endl;
+                    i += number;
                 }
                 fOut.close();
             }
-            cout << mark << endl;
+            else if (number > 1) { // if there are >=2 --> write every of them in func. writeAll()
+                ofstream fOut;
+                fOut.open(fileRoute, ios::app);
+                if (!fOut.is_open())cout << "Error1";
+                else {
+                    writeAll(number, mark, fileRoute);//writing *number* of students with *mark* in *fileRoute* 
+                    i += number;
+                }
+                fOut.close();
+            }
         }
+        cout << "Min mark for scolarship: " << mark << endl;
     }
     fIn.close();
 }
 
 
-float findMaxMark(float* lessthan, string student1) {
+float findMaxMark(float* lessthan, string* student1) {
     ifstream fIn;
     fIn.open("files\\result.csv");
-    if (!fIn.is_open())cout << "Error11";
+    if (!fIn.is_open())
+        cout << "Error11";
     else {
         string student;
         float mark;
@@ -179,6 +190,7 @@ float findMaxMark(float* lessthan, string student1) {
             }
         }
         (*lessthan) = max;
+        (*student1) = maxstudent;
         return max;
     }
 
@@ -205,5 +217,36 @@ int countStudents(float mark) {
 
         }
         return count;
+    }
+}
+
+void writeAll(int number, float mark, char* root) {
+    ifstream fIn;
+    fIn.open("files\\result.csv");
+    if (!fIn.is_open())cout << "Error11";
+    else {
+        string student;
+        float stdMark;
+        while (!fIn.eof()) {
+            getline(fIn, student);
+            if (student != "") {
+                int start = student.find(';');
+                int end = student.rfind(';');
+                stdMark = stof(student.substr(start + 1, end - start - 1)); // student's mark
+                if (stdMark == mark) {
+                    ofstream fOut4;
+                    fOut4.open(root, ios::app);
+                    if (!fOut4.is_open()) cout << "Error";
+                    else {
+
+                        fOut4 << student << endl;
+                        fOut4.close();
+                    }
+
+                }
+
+            }
+        }
+
     }
 }
