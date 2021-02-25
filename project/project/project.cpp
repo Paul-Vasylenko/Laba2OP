@@ -14,26 +14,33 @@ char* getFileRoute(char*, char*);
 int countElem(char*);
 int findSlash(char*, int);
 void countAveragePointsAndWrite(char*m, int*);
+void createRating(int, char*);
+float findMaxMark(float*, string);
 
 int main()
 {
-	
+
     (cin >> directory).get();//getting the directory and putting it into the char*
     setlocale(LC_ALL, " ");//ua language in files
-    ofstream fOut;
-    fOut.open("files\\result.csv", ios::trunc);//либо создаем файл, либо очищаем если он есть.
-    fOut.close();
+    ofstream fOut1;
+    fOut1.open("files\\result.csv", ios::trunc);//либо создаем файл, либо очищаем если он есть.
+    fOut1.close();
+    ofstream fOut2;
+    fOut2.open("files\\rating.csv", ios::trunc);//либо создаем файл, либо очищаем если он есть.
+    fOut2.close();
     //loop that does smth for every file .csv
     _finddata_t data;
     intptr_t handle = _findfirst(directory, &data);
-    int numOfStudents=0;
+    int numOfStudents = 0;
     do {
         char* routeToFile = getFileRoute(data.name, directory);//e.g. of result -> "files\\students1.csv"
         countAveragePointsAndWrite(routeToFile, &numOfStudents);
     } while (_findnext(handle, &data) == 0);
     _findclose(handle);
     numOfStudents = numOfStudents * 0.4;
-    cout << numOfStudents;
+    //here we have numOfStudents = 16.
+    createRating(numOfStudents, directory);
+
     return 0;
 }
 
@@ -105,12 +112,64 @@ void countAveragePointsAndWrite(char* path, int *numOfStudents) {
                 fOut.precision(3);
                 fOut<< result << ";" << isContract << endl;
                 (*numOfStudents)++;
-                
             }
         }
-        fOut.close();
-        
+        fOut.close();        
     }
     fIn.close();
-    
 }
+
+void createRating(int numOfStudents, char* dir)
+{
+    char ratingF[] = "rating.csv";
+    char* fileRoute = getFileRoute(ratingF, dir); // result is files\\rating.csv
+    ofstream fOut;
+    fOut.open(fileRoute, ios::trunc);//create or empty file
+    fOut.close();
+    ifstream fIn;
+    fIn.open("files\\result.csv");
+    string student;
+    float minMark;
+    if (!fIn.is_open())cout << "Error11";
+    else {
+
+        float max = 100.1;
+        float mark;
+        for (int i = 0; i < numOfStudents;i++) {
+            getline(fIn, student);
+            mark = findMaxMark(&max, student); // max mark, 91.400 e.g.
+            cout << mark << endl;
+
+        }
+    }
+    fIn.close();
+}
+
+
+float findMaxMark(float* lessthan, string student1) {
+    ifstream fIn;
+    fIn.open("files\\result.csv");
+    if (!fIn.is_open())cout << "Error11";
+    else {
+        string student;
+        float mark;
+        string maxstudent;
+        float max = 0;
+        while (!fIn.eof()) {
+            getline(fIn, student);
+            if (student != "") {
+                int start = student.find(';');
+                int end = student.rfind(';');
+                mark = stof(student.substr(start + 1, end - start - 1));
+                if (mark<(*lessthan) && mark>max) {
+                    max = mark;
+                    maxstudent = student;
+                }
+            }
+        }
+        (*lessthan) = max;
+        return max;
+    }
+
+}
+

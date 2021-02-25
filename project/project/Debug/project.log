@@ -1,4 +1,7 @@
 ﻿  project.cpp
-C:\Users\Дядя Паша\Desktop\КПІ\ВТОРОЙ_СЕМЕСТР\оп\Лабы\laba2\project\project\project.cpp(35,35): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-C:\Users\Дядя Паша\Desktop\КПІ\ВТОРОЙ_СЕМЕСТР\оп\Лабы\laba2\project\project\project.cpp(101,36): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-  project.vcxproj -> C:\Users\Дядя Паша\Desktop\КПІ\ВТОРОЙ_СЕМЕСТР\оп\Лабы\laba2\project\Debug\project.exe
+C:\Users\litvi\labs\n2\Laba2OP\project\project\project.cpp(40,35): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+C:\Users\litvi\labs\n2\Laba2OP\project\project\project.cpp(108,36): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\litvi\labs\n2\Laba2OP\project\project\project.cpp(136,26): warning C4305: инициализация: усечение из "double" в "float"
+C:\Users\litvi\labs\n2\Laba2OP\project\project\project.cpp(132,11): warning C4101: minMark: неиспользованная локальная переменная
+C:\Users\litvi\labs\n2\Laba2OP\project\project\project.cpp(175): warning C4715: findMaxMark: значение возвращается не при всех путях выполнения
+  project.vcxproj -> C:\Users\litvi\labs\n2\Laba2OP\project\Debug\project.exe
