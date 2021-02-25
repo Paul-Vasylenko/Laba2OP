@@ -160,6 +160,8 @@ void createRating(int numOfStudents, char* dir) {
                 fOut.close();
             }
         }
+        cout.setf(ios::fixed);
+        cout.precision(3);
         cout << "Min mark for scolarship: " << mark << endl;
     }
     fIn.close();
@@ -213,7 +215,6 @@ int countStudents(float mark) {
                     count++;
                 }
             }
-
         }
         return count;
     }
@@ -240,9 +241,7 @@ void writeAll(int number, float mark, char* root) {
                         fOut4 << student << endl;
                         fOut4.close();
                     }
-
                 }
-
             }
         }
 
