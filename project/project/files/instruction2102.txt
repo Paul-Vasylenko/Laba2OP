@@ -1,4 +1,0 @@
-programm has to count how many students in result.csv(341)
-41*0.4 -->16.4 (15)
-16 times for loop finding max and putting it into "Rating.csv"  width(3)
-cout << 16-th cycle result

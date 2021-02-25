@@ -1,4 +1,7 @@
 ﻿  project.cpp
-C:\Users\Дядя Паша\Desktop\КПІ\ВТОРОЙ_СЕМЕСТР\оп\Лабы\laba2\project\project\project.cpp(35,35): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-C:\Users\Дядя Паша\Desktop\КПІ\ВТОРОЙ_СЕМЕСТР\оп\Лабы\laba2\project\project\project.cpp(101,36): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-  project.vcxproj -> C:\Users\Дядя Паша\Desktop\КПІ\ВТОРОЙ_СЕМЕСТР\оп\Лабы\laba2\project\Debug\project.exe
+C:\Users\litvi\labs\n2\Laba2OP\project\project\project.cpp(41,35): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+C:\Users\litvi\labs\n2\Laba2OP\project\project\project.cpp(111,36): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\litvi\labs\n2\Laba2OP\project\project\project.cpp(137,26): warning C4305: инициализация: усечение из "double" в "float"
+C:\Users\litvi\labs\n2\Laba2OP\project\project\project.cpp(200): warning C4715: findMaxMark: значение возвращается не при всех путях выполнения
+C:\Users\litvi\labs\n2\Laba2OP\project\project\project.cpp(223): warning C4715: countStudents: значение возвращается не при всех путях выполнения
+  project.vcxproj -> C:\Users\litvi\labs\n2\Laba2OP\project\Debug\project.exe
