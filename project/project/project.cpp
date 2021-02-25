@@ -41,7 +41,9 @@ int main()
     numOfStudents = numOfStudents * 0.4;
     //here we have numOfStudents = 16.
     createRating(numOfStudents, directory);
-
+    char fileWBudget[] = "result.csv";
+    char* deleteFileBudget = getFileRoute(fileWBudget, directory);
+    remove(deleteFileBudget);
     return 0;
 }
 
